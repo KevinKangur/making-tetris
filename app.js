@@ -31,9 +31,9 @@ function initGame () {
         if ( oBlock.canGoDown(gameBoard.getState()) ) {
             oBlock.moveDown();
         } else {
-            if ( !oBlock.isStopped() ) {
+            if ( !oBlock.getIsStopped() ) {
                 gameBoard.addBlockToState(oBlock);
-                oBlock.isStopped()
+                oBlock.stop()
             }
         }
         gameBoard.draw();

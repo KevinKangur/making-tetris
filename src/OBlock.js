@@ -23,7 +23,7 @@ class OBlock {
 
     constructor ( boardSizeX, boardSizeY ) {
         this.boardSizeX = boardSizeX;
-        this.boardSizeY = boardSizeY
+        this.boardSizeY = boardSizeY;
         
         this.positionX = Math.floor(this.boardSizeX / 2) - 1;
     }
@@ -41,15 +41,14 @@ class OBlock {
     }
 
     getCoordinates () {
-        return shape[0].map( (x) => x[0] + this.positionX, x[1] + this.positionY)
+        return this.shape.map( x => {
+            return [x[0] + this.positionX, x[1] + this.positionY];
+        });
     }
 
     canGoDown ( state ) {
         if ( (this.positionY + this.height) < this.boardSizeY ) {
             return true;
-        }
-        if ( this.isStopped == false ) {
-
         }
         return false;
         //if ( state[] ) {
@@ -57,8 +56,12 @@ class OBlock {
         //}
     }
 
-    isStopped () {
+    getIsStopped () {
+        return this.isStopped;
+    }
 
+    stop () {
+        this.isStopped = true;
     }
 
     moveDown () {

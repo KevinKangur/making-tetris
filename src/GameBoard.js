@@ -2,9 +2,9 @@ class GameBoard {
     
     state = [];
     gameBoardTable = document.getElementById('gameboard');
-    boardSizeX = 12;
-    boardSizeY = 18;
-    currentBlock = undefined;
+    boardSizeX;
+    boardSizeY;
+    currentBlock;
 
     constructor ( boardSizeX, boardSizeY ) {
 
@@ -55,6 +55,10 @@ class GameBoard {
                     boardCellTd.classList.add(this.currentBlock.class);
                 }
 
+                if ( this.state[y][x] != '' ) {
+                    boardCellTd.classList.add(this.state[y][x]);
+                }
+
                 boardRowTr.append(boardCellTd);
             }
             this.gameBoardTable.append(boardRowTr);
@@ -72,10 +76,12 @@ class GameBoard {
     }
 
     addBlockToState ( block ) {
-        coordiantes = block.getCoordinates();
-        coordiantes.forEach( el => {
-            this.state[el[0]][el[1]] = block.class;
+        const coordinates = block.getCoordinates();
+        coordinates.forEach( el => {
+            this.state[el[1]][el[0]] = block.class;
         });
+
+        console.log(this.state);
     }
 
 }
