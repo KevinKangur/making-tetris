@@ -1,9 +1,8 @@
-import { GameBoard } from './src/GameBoard.js';
-import { OBlock } from './src/OBlock.js'
+import { GameBoard } from "./src/GameBoard.js";
 
-//const messageDiv = document.getElementById('message');
-//const scoreDiv = document.getElementById('score');
-//const resetBtn = document.getElementById('reset');
+// const messageDiv = document.getElementById('message');
+// const scoreDiv = document.getElementById('score');
+// const resetBtn = document.getElementById('reset');
 
 let timeoutID, speed;
 
@@ -11,37 +10,38 @@ const boardSizeX = 10;
 const boardSizeY = 20;
 
 function initGame () {
-    
+
     clearTimeout(timeoutID);
     timeoutID = null;
 
-    //score = 0;
+    // score = 0;
     speed = 500;
-    
-    //messageDiv.innerText = '';
-    //messageDiv.classList.add('hidden');    
-    
+
+    // messageDiv.innerText = '';
+    // messageDiv.classList.add('hidden');
+
     const gameBoard = new GameBoard(boardSizeX, boardSizeY);
-    const oBlock = new OBlock(boardSizeX, boardSizeY);
-    gameBoard.addNewBlock(oBlock);
+    gameBoard.addNewBlock();
     gameBoard.draw();
 
     (function repeat() {
         timeoutID = setTimeout(repeat, speed);
-        if ( oBlock.canGoDown(gameBoard.getState()) ) {
-            oBlock.moveDown();
+        const currentBlock = gameBoard.getCurrentBlock();
+        if ( currentBlock.canGoDown(gameBoard.getState()) ) {
+            currentBlock.moveDown();
         } else {
-            if ( !oBlock.getIsStopped() ) {
-                gameBoard.addBlockToState(oBlock);
-                oBlock.stop()
+            if ( !currentBlock.getIsStopped() ) {
+                gameBoard.addBlockToState(currentBlock);
+                currentBlock.stop();
+                gameBoard.addNewBlock();
             }
         }
         gameBoard.draw();
     })();
 
-    //updateHighScore();
+    // addFood();
+    // updateHighScore();
     
 }
 
 initGame();
-

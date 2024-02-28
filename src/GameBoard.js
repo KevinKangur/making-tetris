@@ -1,3 +1,6 @@
+import { OBlock } from "./OBlock.js";
+import { LBlock } from "./LBlock.js";
+
 class GameBoard {
     
     state = [];
@@ -10,7 +13,7 @@ class GameBoard {
 
         this.boardSizeX = boardSizeX;
         this.boardSizeY = boardSizeY;
-        
+
         for ( let y = 0; y < this.boardSizeY; y++ ) {
             let arr = [];
             for ( let x = 0; x < this.boardSizeX; x++ ) {
@@ -18,22 +21,27 @@ class GameBoard {
             }
             this.state.push(arr);
         }
-            
+
         document.addEventListener ('keydown', e => {
             switch ( e.key ) {
-                // case 'ArrowUp':
-                //     direction = 'u';
-                //     break;
+                case 'ArrowUp':
+                    this.currentBlock.nextPose();
+                    this.draw();
+                    break;
                 // case 'ArrowDown':
                 //     direction = 'd';
                 //     break;
                 case 'ArrowLeft':
-                    this.currentBlock.moveLeft();
-                    this.draw();
+                    if ( this.currentBlock.canGoLeft(this.state) ) {
+                        this.currentBlock.moveLeft();
+                        this.draw();
+                    }
                     break;
                 case 'ArrowRight':
-                    this.currentBlock.moveRight();
-                    this.draw();
+                    if ( this.currentBlock.canGoRight(this.state) ) {
+                        this.currentBlock.moveRight();
+                        this.draw();
+                    }
                     break;
             }
         });
@@ -55,9 +63,12 @@ class GameBoard {
                     boardCellTd.classList.add(this.currentBlock.class);
                 }
 
+                // draw colors
+
                 if ( this.state[y][x] != '' ) {
                     boardCellTd.classList.add(this.state[y][x]);
                 }
+
 
                 boardRowTr.append(boardCellTd);
             }
@@ -71,19 +82,22 @@ class GameBoard {
         return this.state;
     }
 
-    addNewBlock( block ) {
-        this.currentBlock = block;
+    getCurrentBlock () {
+        return this.currentBlock;
+    }
+
+    addNewBlock() {
+        this.currentBlock = new LBlock(this.boardSizeX, this.boardSizeY);
     }
 
     addBlockToState ( block ) {
+
         const coordinates = block.getCoordinates();
         coordinates.forEach( el => {
-            this.state[el[1]][el[0]] = block.class;
+            this.state[el[0]][el[1]] = block.class;
         });
 
-        console.log(this.state);
     }
-
 }
 
 export { GameBoard }
